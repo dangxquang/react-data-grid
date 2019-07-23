@@ -303,11 +303,18 @@ class EditorContainer extends React.Component {
     }
   };
 
+  autoCommit = (e) => {
+    const { shouldAutoCommit = () => true } = this.getEditor()
+    if (shouldAutoCommit()) {
+      this.commit(e)
+    }
+  }
+
   render() {
     const { width, height, left, top } = this.props;
     const style = { position: 'absolute', height, width, left, top, zIndex: zIndexes.EDITOR_CONTAINER };
     return (
-      <ClickOutside onClickOutside={this.commit}>
+      <ClickOutside onClickOutside={this.autoCommit}>
         <div
           style={style}
           className={this.getContainerClass()}

@@ -1,6 +1,5 @@
 {
-  "name": "react-data-grid",
-  "private": true,
+  "name": "dxq-grid",
   "description": "Data grid for React",
   "main": "src/index.js",
   "scripts": {
@@ -20,7 +19,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/adazzle/react-data-grid.git"
+    "url": "git://github.com/dangxquang/react-data-grid.git"
   },
   "keywords": [
     "react",

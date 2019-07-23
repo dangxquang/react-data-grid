@@ -68,15 +68,14 @@ class EditorContainer extends React.Component {
   };
 
   onKeyDown = (e) => {
+    const { shouldKeyExplicitlyHandled = () => true } = this.getEditor();
+    if (!shouldKeyExplicitlyHandled()) return;
     if (isCtrlKeyHeldDown(e)) {
       this.checkAndCall('onPressKeyWithCtrl', e);
     } else if (this.isKeyExplicitlyHandled(e.key)) {
       // break up individual keyPress events to have their own specific callbacks
-      const { shouldKeyExplicitlyHandled = () => true } = this.getEditor()
-      if (shouldKeyExplicitlyHandled()) {
-        const callBack = 'onPress' + e.key;
-        this.checkAndCall(callBack, e);
-      }
+      const callBack = 'onPress' + e.key;
+      this.checkAndCall(callBack, e);
     } else if (isKeyPrintable(e.keyCode)) {
       e.stopPropagation();
       this.checkAndCall('onPressChar', e);
@@ -307,9 +306,9 @@ class EditorContainer extends React.Component {
   };
 
   autoCommit = (e) => {
-    const { shouldAutoCommit = () => true } = this.getEditor()
+    const { shouldAutoCommit = () => true } = this.getEditor();
     if (shouldAutoCommit()) {
-      this.commit(e)
+      this.commit(e);
     }
   }
 

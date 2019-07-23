@@ -72,8 +72,11 @@ class EditorContainer extends React.Component {
       this.checkAndCall('onPressKeyWithCtrl', e);
     } else if (this.isKeyExplicitlyHandled(e.key)) {
       // break up individual keyPress events to have their own specific callbacks
-      const callBack = 'onPress' + e.key;
-      this.checkAndCall(callBack, e);
+      const { shouldKeyExplicitlyHandled = () => true } = this.getEditor()
+      if (shouldKeyExplicitlyHandled()) {
+        const callBack = 'onPress' + e.key;
+        this.checkAndCall(callBack, e);
+      }
     } else if (isKeyPrintable(e.keyCode)) {
       e.stopPropagation();
       this.checkAndCall('onPressChar', e);

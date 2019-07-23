@@ -72,8 +72,11 @@ class EditorContainer extends React.Component {
       this.checkAndCall('onPressKeyWithCtrl', e);
     } else if (this.isKeyExplicitlyHandled(e.key)) {
       // break up individual keyPress events to have their own specific callbacks
-      const callBack = 'onPress' + e.key;
-      this.checkAndCall(callBack, e);
+      const { shouldKeyExplicitlyHandled = () => true } = this.getEditor()
+      if (shouldKeyExplicitlyHandled()) {
+        const callBack = 'onPress' + e.key;
+        this.checkAndCall(callBack, e);
+      }
     } else if (isKeyPrintable(e.keyCode)) {
       e.stopPropagation();
       this.checkAndCall('onPressChar', e);
@@ -303,11 +306,18 @@ class EditorContainer extends React.Component {
     }
   };
 
+  autoCommit = (e) => {
+    const { shouldAutoCommit = () => true } = this.getEditor()
+    if (shouldAutoCommit()) {
+      this.commit(e)
+    }
+  }
+
   render() {
     const { width, height, left, top } = this.props;
     const style = { position: 'absolute', height, width, left, top, zIndex: zIndexes.EDITOR_CONTAINER };
     return (
-      <ClickOutside onClickOutside={this.commit}>
+      <ClickOutside onClickOutside={this.autoCommit}>
         <div
           style={style}
           className={this.getContainerClass()}
